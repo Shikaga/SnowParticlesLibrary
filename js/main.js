@@ -15,9 +15,10 @@ var SnowflakeGenerator = function() {
 
 SnowflakeGenerator.prototype.createSnowflake = function(x, y)
 {
-    var circle = paper.circle(x, y, 5);
+    var size = Math.random() * 2 + 4;
+    var circle = paper.circle(x, y, size);
     circle.attr("fill", "#fff");
-    var anim = Raphael.animation({cx: x, cy: 500}, 2e3);
+    var anim = Raphael.animation({cx: x, cy: 2000}, 5000 + size * 1000);
     circle.animate(anim); // run the given animation immediately
 }
 
