@@ -9,6 +9,7 @@ var SnowflakeGenerator = function() {
     this.speed = .1;
     this.heaviness = 20;
     this.bottomOfScreen = 2000;
+    this.offsetCoefficient = 200;
     console.log(this.wind);
 }
 
@@ -17,11 +18,12 @@ SnowflakeGenerator.prototype.createSnowflake = function(x, y)
     var size = Math.random() * 2 + 4;
     var timeToRun = this.bottomOfScreen / this.speed;
     timeToRun = timeToRun * (size / 5);
+    var randomDirectionOffset = Math.random()*this.offsetCoefficient*2 - this.offsetCoefficient;
 
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
 
-    var anim = Raphael.animation({cx: x+(this.wind + this.wind * size), cy: this.bottomOfScreen}, timeToRun);
+    var anim = Raphael.animation({cx: x+(this.wind + this.wind * size)+randomDirectionOffset, cy: this.bottomOfScreen}, timeToRun);
     circle.animate(anim); // run the given animation immediately
 }
 
