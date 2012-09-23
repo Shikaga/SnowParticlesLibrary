@@ -30,7 +30,7 @@ SnowflakeGenerator.prototype.generateSnowflakes = function()
     var self = this;
     setInterval(function() {
 	var widthOffsetRatio = Math.random();
-	self.createSnowflake(document.width*widthOffsetRatio,40);
+	self.createSnowflake((document.width + (Math.abs(self.wind)))*widthOffsetRatio - self.wind,40);
     }, 20);
 }
 
