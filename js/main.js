@@ -11,6 +11,9 @@ console.log(svg);
 svg.setAttribute("pointer-events", "none");
 
 var SnowflakeGenerator = function() {
+    var windCoefficient = 200;
+    this.wind = Math.random() * windCoefficient*2 - windCoefficient;
+    console.log(this.wind);
 }
 
 SnowflakeGenerator.prototype.createSnowflake = function(x, y)
@@ -18,7 +21,7 @@ SnowflakeGenerator.prototype.createSnowflake = function(x, y)
     var size = Math.random() * 2 + 4;
     var circle = paper.circle(x, y, size);
     circle.attr("fill", "#fff");
-    var anim = Raphael.animation({cx: x, cy: 2000}, 5000 + size * 1000);
+    var anim = Raphael.animation({cx: x+(this.wind + this.wind * size), cy: 2000}, 5000 + size * 1000);
     circle.animate(anim); // run the given animation immediately
 }
 
