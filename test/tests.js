@@ -36,7 +36,6 @@ test( "test-snowflake-start-position-range", function() {
     //Range test
     var expectedStartWidthRange = widthOfScreen + 2000
     var actualStartWidthRange = sig.getRange(timeToFallToBottomOfScreen);
-    console.log(actualStartWidthRange);
     ok(expectedStartWidthRange == actualStartWidthRange, "Passed!");
 
     var expectedXEndOffset = wind * timeToFallToBottomOfScreen;

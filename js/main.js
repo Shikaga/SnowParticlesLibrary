@@ -1,6 +1,5 @@
 var paper = Raphael(0, 0, "100%", "100%");
 var svg = document.getElementsByTagName("svg")[0];
-console.log(svg);
 svg.setAttribute("pointer-events", "none");
 
 var SnowflakeInitializationEngine = function(wind, bottomOfScreen, widthOfScreen)
@@ -46,7 +45,6 @@ var SnowflakeGenerator = function() {
     this.bottomOfScreen = 500;
     this.offsetCoefficient = 200;
     this.sie = new SnowflakeInitializationEngine(this.wind, this.bottomOfScreen, document.width);
-    console.log(this.wind);
 }
 
 SnowflakeGenerator.prototype.createSnowflake = function()
@@ -54,22 +52,16 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var size = Math.random() * 2 + 4;
     var timeToRun = this.bottomOfScreen / this.speed;
     timeToRun = timeToRun * (size / 5);
-    var randomDirectionOffset = Math.random()*this.offsetCoefficient*2 - this.offsetCoefficient;
-
-	var widthOffsetRatio = Math.random();
-	var windOffset = this.wind;
-	var widthOffsetDueToWind = Math.abs(this.wind);
 
     var xOffset = this.sie.getStartPositionXOfSnowflake(timeToRun);
     var xRange = this.sie.getRange(timeToRun);
     var xEndOffset = this.sie.getXEndOffset(timeToRun);
+
     var x = xOffset +  Math.random() * xRange;
     var y = 0;    
 
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
-
-
     var anim = Raphael.animation({cx: x+xEndOffset, cy: this.bottomOfScreen}, timeToRun);
     circle.animate(anim); // run the given animation immediately
 }
