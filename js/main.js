@@ -3,10 +3,11 @@ var svg = document.getElementsByTagName("svg")[0];
 console.log(svg);
 svg.setAttribute("pointer-events", "none");
 
-var SnowflakeInitializationEngine = function(wind, bottomOfScreen)
+var SnowflakeInitializationEngine = function(wind, bottomOfScreen, widthOfScreen)
 {
     this.wind = wind;
     this.bottomOfScreen = bottomOfScreen;
+    this.widthOfScreen = widthOfScreen;
 }
 
 SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(timeToFall)
@@ -15,27 +16,49 @@ SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(
     return -distanceBlown;
 }
 
+SnowflakeInitializationEngine.prototype.getRange = function(timeToFall)
+{
+    return this.widthOfScreen - this.getStartPositionXOfSnowflake(timeToFall);
+}
+
+SnowflakeInitializationEngine.prototype.getXEndOffset = function(timeToFall)
+{
+    return this.wind * timeToFall;
+}
+
 var SnowflakeGenerator = function() {
-    var windCoefficient = 200;
+    var windCoefficient = 0.1;
     this.wind = Math.random() * windCoefficient*2 - windCoefficient;
     this.speed = .1;
     this.heaviness = 20;
-    this.bottomOfScreen = 2000;
+    this.bottomOfScreen = 500;
     this.offsetCoefficient = 200;
+    this.sie = new SnowflakeInitializationEngine(this.wind, this.bottomOfScreen, document.width);
     console.log(this.wind);
 }
 
-SnowflakeGenerator.prototype.createSnowflake = function(x, y)
+SnowflakeGenerator.prototype.createSnowflake = function()
 {
     var size = Math.random() * 2 + 4;
     var timeToRun = this.bottomOfScreen / this.speed;
     timeToRun = timeToRun * (size / 5);
     var randomDirectionOffset = Math.random()*this.offsetCoefficient*2 - this.offsetCoefficient;
 
+	var widthOffsetRatio = Math.random();
+	var windOffset = this.wind;
+	var widthOffsetDueToWind = Math.abs(this.wind);
+
+    var xOffset = this.sie.getStartPositionXOfSnowflake(timeToRun);
+    var xRange = this.sie.getRange(timeToRun);
+    var xEndOffset = this.sie.getXEndOffset(timeToRun);
+    var x = xOffset +  Math.random() * xRange;
+    var y = 0;    
+
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
 
-    var anim = Raphael.animation({cx: x+(this.wind + this.wind * size)+randomDirectionOffset, cy: this.bottomOfScreen}, timeToRun);
+
+    var anim = Raphael.animation({cx: x+xEndOffset, cy: this.bottomOfScreen}, timeToRun);
     circle.animate(anim); // run the given animation immediately
 }
 
@@ -43,10 +66,7 @@ SnowflakeGenerator.prototype.generateSnowflakes = function()
 {
     var self = this;
     setInterval(function() {
-	var widthOffsetRatio = Math.random();
-	var windOffset = self.wind;
-	var widthOffsetDueToWind = Math.abs(self.wind);
-	self.createSnowflake((document.width + widthOffsetDueToWind)*widthOffsetRatio - windOffset,0);
+	self.createSnowflake();
     }, this.heaviness);
 }
 
