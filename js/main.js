@@ -10,15 +10,27 @@ var SnowflakeInitializationEngine = function(wind, bottomOfScreen, widthOfScreen
     this.widthOfScreen = widthOfScreen;
 }
 
+SnowflakeInitializationEngine.prototype.getDistanceBlown = function(timeToFall)
+{
+   var distanceBlown = this.wind * timeToFall
+    return Math.abs(distanceBlown);
+}
+
 SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(timeToFall)
 {
     var distanceBlown = this.wind * timeToFall
+    if (distanceBlown <= 0) return 0;
     return -distanceBlown;
 }
 
 SnowflakeInitializationEngine.prototype.getRange = function(timeToFall)
 {
-    return this.widthOfScreen - this.getStartPositionXOfSnowflake(timeToFall);
+    var startPosition = this.getStartPositionXOfSnowflake(timeToFall);
+    if (startPosition < 0)
+	return this.widthOfScreen - startPosition;
+    else {
+	return this.widthOfScreen + this.getDistanceBlown(timeToFall);
+    }
 }
 
 SnowflakeInitializationEngine.prototype.getXEndOffset = function(timeToFall)
