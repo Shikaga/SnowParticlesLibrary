@@ -1,7 +1,7 @@
 function testOffset(sie, timeToFall, expectedOffset)
 {
     test("offset", function() {
-	var offset = sie.getStartPositionXOfSnowflake(timeToFall);
+	var offset = sie.getOffset(timeToFall);
 	equal(expectedOffset, offset);
     });
 }
@@ -17,7 +17,7 @@ function testRange(sie, timeToFall, expectedRange)
 function testWindDrift(sie, timeToFall, expectedOffset)
 {
     test("wind drift", function() {
-	var offset = sie.getXEndOffset(timeToFall);
+	var offset = sie.getWindDrift(timeToFall);
 	equal(expectedOffset, offset);
     });
 } 
@@ -26,52 +26,52 @@ function testWindDrift(sie, timeToFall, expectedOffset)
     //Setup
     var wind = 0.2; // 200 pixels to the right per second
     var bottomOfScreen = 2000;
-    var timeToFallToBottomOfScreen = 10000; //10 Seconds
+    var timeToFall = 10000; //10 Seconds
     var widthOfScreen = 1000;
     var windToRightSIE = new SnowflakeInitializationEngine(wind, bottomOfScreen, widthOfScreen);
     var expectedXStartPosition = -2000; //pixels to the left of the screen
-    testOffset(windToRightSIE, timeToFallToBottomOfScreen, expectedXStartPosition);
+    testOffset(windToRightSIE, timeToFall, expectedXStartPosition);
 
     //Range test
     var expectedStartWidthRange = widthOfScreen - expectedXStartPosition
 
-    testRange(windToRightSIE, timeToFallToBottomOfScreen, expectedStartWidthRange);
+    testRange(windToRightSIE, timeToFall, expectedStartWidthRange);
 
-    var expectedXEndOffset = wind * timeToFallToBottomOfScreen;
-    testWindDrift(windToRightSIE, timeToFallToBottomOfScreen, expectedXEndOffset);
+    var expectedXEndOffset = wind * timeToFall;
+    testWindDrift(windToRightSIE, timeToFall, expectedXEndOffset);
 
 
     //Setup
     var wind = -0.2; // 200 pixels to the right per second
     var bottomOfScreen = 2000;
-    var timeToFallToBottomOfScreen = 10000; //10 Seconds
+    var timeToFall = 10000; //10 Seconds
     var widthOfScreen = 1000;
     var windToLeftSIE = new SnowflakeInitializationEngine(wind, bottomOfScreen, widthOfScreen);
     //Offset test
     var expectedXStartPosition = 0; //pixels to the left of the screen
-    testOffset(windToLeftSIE, timeToFallToBottomOfScreen, expectedXStartPosition);
+    testOffset(windToLeftSIE, timeToFall, expectedXStartPosition);
 
     //Range test
     var expectedStartWidthRange = widthOfScreen + 2000
-    testRange(windToLeftSIE, timeToFallToBottomOfScreen, expectedStartWidthRange);
+    testRange(windToLeftSIE, timeToFall, expectedStartWidthRange);
 
-    var expectedXEndOffset = wind * timeToFallToBottomOfScreen;
-    testWindDrift(windToLeftSIE, timeToFallToBottomOfScreen, expectedXEndOffset);
+    var expectedXEndOffset = wind * timeToFall;
+    testWindDrift(windToLeftSIE, timeToFall, expectedXEndOffset);
 
     //Setup
     var wind = 0; // 200 pixels to the right per second
     var bottomOfScreen = 2000;
-    var timeToFallToBottomOfScreen = 10000; //10 Seconds
+    var timeToFall = 10000; //10 Seconds
     var widthOfScreen = 1000;
     var noWindSIE = new SnowflakeInitializationEngine(wind, bottomOfScreen, widthOfScreen);
     //Offset test
     var expectedXStartPosition = 0; //pixels to the left of the screen
-    testOffset(noWindSIE, timeToFallToBottomOfScreen, expectedXStartPosition);
+    testOffset(noWindSIE, timeToFall, expectedXStartPosition);
 
     //Range test
     var expectedStartWidthRange = widthOfScreen - expectedXStartPosition
-    testRange(noWindSIE, timeToFallToBottomOfScreen, expectedStartWidthRange);
+    testRange(noWindSIE, timeToFall, expectedStartWidthRange);
 
-    var expectedXEndOffset = wind * timeToFallToBottomOfScreen;
-    testWindDrift(noWindSIE, timeToFallToBottomOfScreen, expectedXEndOffset);
+    var expectedXEndOffset = wind * timeToFall;
+    testWindDrift(noWindSIE, timeToFall, expectedXEndOffset);
 

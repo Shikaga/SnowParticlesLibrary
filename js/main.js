@@ -15,7 +15,7 @@ SnowflakeInitializationEngine.prototype.getDistanceBlown = function(timeToFall)
     return Math.abs(distanceBlown);
 }
 
-SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getOffset = function(timeToFall)
 {
     var distanceBlown = this.wind * timeToFall
     if (distanceBlown <= 0) return 0;
@@ -24,7 +24,7 @@ SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(
 
 SnowflakeInitializationEngine.prototype.getRange = function(timeToFall)
 {
-    var startPosition = this.getStartPositionXOfSnowflake(timeToFall);
+    var startPosition = this.getOffset(timeToFall);
     if (startPosition < 0)
 	return this.widthOfScreen - startPosition;
     else {
@@ -32,7 +32,7 @@ SnowflakeInitializationEngine.prototype.getRange = function(timeToFall)
     }
 }
 
-SnowflakeInitializationEngine.prototype.getXEndOffset = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getWindDrift = function(timeToFall)
 {
     return this.wind * timeToFall;
 }
@@ -53,9 +53,9 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var timeToRun = this.bottomOfScreen / this.speed;
     timeToRun = timeToRun * (size / 5);
 
-    var xOffset = this.sie.getStartPositionXOfSnowflake(timeToRun);
+    var xOffset = this.sie.getOffset(timeToRun);
     var xRange = this.sie.getRange(timeToRun);
-    var xEndOffset = this.sie.getXEndOffset(timeToRun);
+    var xEndOffset = this.sie.getWindDrift(timeToRun);
 
     var x = xOffset +  Math.random() * xRange;
     var y = 0;    
