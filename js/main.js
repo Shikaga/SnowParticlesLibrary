@@ -3,6 +3,18 @@ var svg = document.getElementsByTagName("svg")[0];
 console.log(svg);
 svg.setAttribute("pointer-events", "none");
 
+var SnowflakeInitializationEngine = function(wind, bottomOfScreen)
+{
+    this.wind = wind;
+    this.bottomOfScreen = bottomOfScreen;
+}
+
+SnowflakeInitializationEngine.prototype.getStartPositionXOfSnowflake = function(timeToFall)
+{
+    var distanceBlown = this.wind * timeToFall
+    return -distanceBlown;
+}
+
 var SnowflakeGenerator = function() {
     var windCoefficient = 200;
     this.wind = Math.random() * windCoefficient*2 - windCoefficient;
