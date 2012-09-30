@@ -2,39 +2,48 @@ var paper = Raphael(0, 0, "100%", "100%");
 var svg = document.getElementsByTagName("svg")[0];
 svg.setAttribute("pointer-events", "none");
 
-var SnowflakeInitializationEngine = function(wind, bottomOfScreen, widthOfScreen)
+var SnowflakeInitializationEngine = function(wind, gravity, bottomOfScreen, widthOfScreen, timeToFall)
 {
+    this.gravity = gravity;
     this.wind = wind;
     this.bottomOfScreen = bottomOfScreen;
     this.widthOfScreen = widthOfScreen;
+    this.timeToFall = timeToFall;
 }
 
-SnowflakeInitializationEngine.prototype.getDistanceBlown = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getDistanceBlown = function()
 {
-   var distanceBlown = this.wind * timeToFall
+   var distanceBlown = this.wind * this.timeToFall
     return Math.abs(distanceBlown);
 }
 
-SnowflakeInitializationEngine.prototype.getOffset = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getOffset = function()
 {
-    var distanceBlown = this.wind * timeToFall
+    var distanceBlown = this.wind * this.timeToFall
     if (distanceBlown <= 0) return 0;
     return -distanceBlown;
 }
 
-SnowflakeInitializationEngine.prototype.getRange = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getRange = function()
 {
-    var startPosition = this.getOffset(timeToFall);
+    var startPosition = this.getOffset(this.timeToFall);
     if (startPosition < 0)
 	return this.widthOfScreen - startPosition;
     else {
-	return this.widthOfScreen + this.getDistanceBlown(timeToFall);
+	return this.widthOfScreen + this.getDistanceBlown(this.timeToFall);
     }
 }
 
-SnowflakeInitializationEngine.prototype.getWindDrift = function(timeToFall)
+SnowflakeInitializationEngine.prototype.getWindDrift = function()
 {
-    return this.wind * timeToFall;
+    return this.wind * this.timeToFall;
+}
+
+SnowflakeInitializationEngine.prototype.getTimeToRun = function(size)
+{
+    var timeToRun = this.bottomOfScreen / this.gravity;
+    timeToRun = timeToRun * (size / 5);
+    return timeToRun;
 }
 
 var SnowflakeGenerator = function() {
@@ -42,20 +51,19 @@ var SnowflakeGenerator = function() {
     this.wind = Math.random() * windCoefficient*2 - windCoefficient;
     this.speed = .1;
     this.heaviness = 20;
-    this.bottomOfScreen = 500;
+    this.bottomOfScreen = 2000;
     this.offsetCoefficient = 200;
-    this.sie = new SnowflakeInitializationEngine(this.wind, this.bottomOfScreen, document.width);
+    this.sie = new SnowflakeInitializationEngine(this.wind, this.speed, this.bottomOfScreen, document.width, 10000); //magic number
 }
 
 SnowflakeGenerator.prototype.createSnowflake = function()
 {
     var size = Math.random() * 2 + 4;
-    var timeToRun = this.bottomOfScreen / this.speed;
-    timeToRun = timeToRun * (size / 5);
 
-    var xOffset = this.sie.getOffset(timeToRun);
-    var xRange = this.sie.getRange(timeToRun);
-    var xEndOffset = this.sie.getWindDrift(timeToRun);
+    var timeToRun = this.sie.getTimeToRun(size);
+    var xOffset = this.sie.getOffset();
+    var xRange = this.sie.getRange();
+    var xEndOffset = this.sie.getWindDrift();
 
     var x = xOffset +  Math.random() * xRange;
     var y = 0;    
@@ -63,7 +71,7 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
     var anim = Raphael.animation({cx: x+xEndOffset, cy: this.bottomOfScreen}, timeToRun);
-    circle.animate(anim); // run the given animation immediately
+    circle.animate(anim); 
 }
 
 SnowflakeGenerator.prototype.generateSnowflakes = function()
