@@ -1,7 +1,3 @@
-var paper = Raphael(0, 0, "100%", "100%");
-var svg = document.getElementsByTagName("svg")[0];
-svg.setAttribute("pointer-events", "none");
-
 var SnowflakeInitializationEngine = function(wind, gravity, bottomOfScreen, widthOfScreen, timeToFall)
 {
     this.gravity = gravity;
@@ -81,6 +77,10 @@ SnowflakeGenerator.prototype.generateSnowflakes = function()
 	self.createSnowflake();
     }, this.heaviness);
 }
+
+var paper = Raphael(0, 0, "100%", "100%");
+var svg = document.getElementsByTagName("svg")[0];
+svg.setAttribute("pointer-events", "none");
 
 var snowflakeGenerator = new SnowflakeGenerator();
 snowflakeGenerator.generateSnowflakes();
