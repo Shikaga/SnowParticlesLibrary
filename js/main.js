@@ -50,6 +50,7 @@ var SnowflakeGenerator = function() {
     this.bottomOfScreen = 2000;
     this.offsetCoefficient = 200;
     this.sie = new SnowflakeInitializationEngine(this.wind, this.speed, this.bottomOfScreen, document.width, 10000); //magic number
+    this.spriteHandler = new SpriteHandler();
 }
 
 SnowflakeGenerator.prototype.createSnowflake = function()
@@ -66,18 +67,22 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var xEnd = x+xEndOffset;
     var yEnd = this.bottomOfScreen;
 
-    var circle = this.createCircleSprite(x,y,size);
-    this.animateCircleSprite(circle, xEnd, yEnd, timeToRun);
+    var circle = this.spriteHandler.createCircleSprite(x,y,size);
+    this.spriteHandler.animateCircleSprite(circle, xEnd, yEnd, timeToRun);
 }
 
-SnowflakeGenerator.prototype.createCircleSprite = function(x, y, size)
+var SpriteHandler = function() {
+
+}
+
+SpriteHandler.prototype.createCircleSprite = function(x, y, size)
 {
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
     return circle;
 }
 
-SnowflakeGenerator.prototype.animateCircleSprite = function(circle, x, y, timeToAnimate)
+SpriteHandler.prototype.animateCircleSprite = function(circle, x, y, timeToAnimate)
 {
     var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
     circle.animate(anim); 
