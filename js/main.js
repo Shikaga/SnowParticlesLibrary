@@ -63,10 +63,23 @@ SnowflakeGenerator.prototype.createSnowflake = function()
 
     var x = xOffset +  Math.random() * xRange;
     var y = 0;    
+    var xEnd = x+xEndOffset;
+    var yEnd = this.bottomOfScreen;
 
+    var circle = this.createCircleSprite(x,y,size);
+    this.animateCircleSprite(circle, xEnd, yEnd, timeToRun);
+}
+
+SnowflakeGenerator.prototype.createCircleSprite = function(x, y, size)
+{
     var circle = paper.circle(x, y, size);    
     circle.attr("fill", "#fff");
-    var anim = Raphael.animation({cx: x+xEndOffset, cy: this.bottomOfScreen}, timeToRun);
+    return circle;
+}
+
+SnowflakeGenerator.prototype.animateCircleSprite = function(circle, x, y, timeToAnimate)
+{
+    var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
     circle.animate(anim); 
 }
 
