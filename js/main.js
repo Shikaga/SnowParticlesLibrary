@@ -49,7 +49,7 @@ var SnowflakeGenerator = function() {
     this.heaviness = 20;
     this.bottomOfScreen = 2000;
     this.offsetCoefficient = 200;
-    this.sie = new SnowflakeInitializationEngine(this.wind, this.speed, this.bottomOfScreen, document.width, 10000); //magic number
+    this.sie = new SnowflakeInitializationEngine(this.wind, this.speed, this.bottomOfScreen, window.innerWidth, 10000); //magic number
     this.spriteHandler = new SpriteHandler();
 }
 
