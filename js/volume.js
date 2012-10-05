@@ -39,7 +39,25 @@ var VolumeSnowflakeGenerator = function(density) {
 
 VolumeSnowflakeGenerator.prototype.getNumberOfFlakes = function()
 {
-    return this.width * this.height * this.density;
+    return Math.floor(this.width * this.height * this.density);
+}
+
+VolumeSnowflakeGenerator.prototype.getUniqueFlakes = function(x,y,width, height, flakes)
+{
+    console.log(flakes);
+    var uniqueFlakes = [];
+    for (flakeLocation in flakes)
+    {
+	var flake = flakes[flakeLocation];
+	console.log(flake);
+	if (!(flake.x >= x &&
+	    flake.x < width &&
+	    flake.y >= y &&
+	      flake.y < height)) {
+	    uniqueFlakes.push(flake);
+	}
+    }
+    return uniqueFlakes;
 }
 
 VolumeSnowflakeGenerator.prototype.getSnowflakes = function(x,y,width, height)
@@ -53,8 +71,9 @@ VolumeSnowflakeGenerator.prototype.getSnowflakes = function(x,y,width, height)
     var flakes = new Array();
     for (var i=0; i < this.getNumberOfFlakes(); i++)
     {
-	flakes.push([this.spg.getXPosition(),this.spg.getYPosition()]);
+	flakes.push({x:this.spg.getXPosition(),y:this.spg.getYPosition()});
     }
+    
     return flakes;
 }
 
