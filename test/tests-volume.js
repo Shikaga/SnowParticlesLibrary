@@ -56,6 +56,8 @@ test("equal", function() {
 var MockSnowflakePositionGenerator = function() {
     this.x = [];
     this.y = [];
+    this.xInvoked = 0;
+    this.yInvoked = 0;
 }
 
 MockSnowflakePositionGenerator.prototype.addPosition = function(x,y)
@@ -66,13 +68,20 @@ MockSnowflakePositionGenerator.prototype.addPosition = function(x,y)
 
 MockSnowflakePositionGenerator.prototype.getXPosition = function()
 {
-    return this.x.shift();
+    this.xInvoked++;
+    return this.x.shift() || Math.random();
 }
 
-MockSnowflakePositionGenerator.prototype.getXPosition = function()
+MockSnowflakePositionGenerator.prototype.getYPosition = function()
 {
-    return this.y.shift();
+    this.yInvoked++;
+    return this.y.shift() || Math.random();
 }
+
+MockSnowflakePositionGenerator.prototype.resize = function()
+{
+}
+
 
 var mspg = new MockSnowflakePositionGenerator();
 
@@ -91,13 +100,32 @@ function assertSpgSizeCorrect(vsg,x,y,width,height) {
 } 
 
 test("SPG is correctly resized upon getSnowflakesCalled", function() {
-    var vsg = new VolumeSnowflakeGenerator();
+    var vsg = new VolumeSnowflakeGenerator(0.001);
     assertSpgSizeCorrect(vsg,0,0,0,0);
     vsg.getSnowflakes(0,0,100,100);
     assertSpgSizeCorrect(vsg,0,0,100,100);
     vsg.getSnowflakes(50,50,50,50);
     assertSpgSizeCorrect(vsg,50,50,50,50);
+});
 
+test("et Density", function() {
+    var vsg = new VolumeSnowflakeGenerator(0.001);
+    equal(0,vsg.getNumberOfFlakes());
+    vsg.getSnowflakes(0,0,100,100);
+    var expectedDensity = 100 * 100 * 0.001;
+    equal(expectedDensity,vsg.getNumberOfFlakes());
+    vsg.getSnowflakes(50,50,50,50);
+    expectedDensity = 50 * 50 * 0.001;
+    equal(expectedDensity,vsg.getNumberOfFlakes());
+});
+
+test("Correct number of getSnowflake() calls are made for the density", function() {
+    var vsg = new VolumeSnowflakeGenerator(0.001);
+    vsg.spg = mspg; //Oh yeah, sick abrevs
+    var flakes = vsg.getSnowflakes(0,0,100,100);
+    var expectedSize = 10; //100 * 100 * 0.01
+    equal(expectedSize, flakes.length);
+    equal(expectedSize, mspg.xInvoked);
 });
 
 testlol(vsg.getLol());
