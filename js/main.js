@@ -96,6 +96,11 @@ SnowflakeGenerator.prototype.generateSnowflakes = function()
     }, this.heaviness);
 }
 
+VolumeSnowflakeGenerator = function()
+{
+
+}
+
 var paper = Raphael(0, 0, "100%", "100%");
 var svg = document.getElementsByTagName("svg")[0];
 svg.setAttribute("pointer-events", "none");
