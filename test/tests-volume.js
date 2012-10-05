@@ -78,6 +78,12 @@ MockSnowflakePositionGenerator.prototype.getYPosition = function()
     return this.y.shift() || Math.random();
 }
 
+MockSnowflakePositionGenerator.prototype.reset = function()
+{
+    this.xInvoked = 0;
+    this.yInvoked = 0;
+}
+
 MockSnowflakePositionGenerator.prototype.resize = function()
 {
 }
@@ -126,6 +132,18 @@ test("Correct number of getSnowflake() calls are made for the density", function
     var expectedSize = 10; //100 * 100 * 0.01
     equal(expectedSize, flakes.length);
     equal(expectedSize, mspg.xInvoked);
+    equal(expectedSize, mspg.yInvoked);
+    mspg.reset();
+    flakes = vsg.getSnowflakes(0,0,200,100);
+    expectedSize = 20; //200 * 100 * 0.01
+    equal(expectedSize, flakes.length);
+    equal(expectedSize, mspg.xInvoked);
+    equal(expectedSize, mspg.yInvoked);
+});
+
+test("Snowflakes aren't generated in old quadrants", function() 
+{
+    
 });
 
 testlol(vsg.getLol());

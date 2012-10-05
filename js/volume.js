@@ -53,7 +53,7 @@ VolumeSnowflakeGenerator.prototype.getSnowflakes = function(x,y,width, height)
     var flakes = new Array();
     for (var i=0; i < this.getNumberOfFlakes(); i++)
     {
-	flakes.push(this.spg.getXPosition());
+	flakes.push([this.spg.getXPosition(),this.spg.getYPosition()]);
     }
     return flakes;
 }
