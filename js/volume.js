@@ -37,9 +37,9 @@ var VolumeSnowflakeGenerator = function(density) {
     this.density = density;
 }
 
-VolumeSnowflakeGenerator.prototype.getNumberOfFlakes = function()
+VolumeSnowflakeGenerator.prototype.getNumberOfFlakes = function(width, height)
 {
-    return Math.floor(this.width * this.height * this.density);
+    return Math.floor(width * height * this.density);
 }
 
 VolumeSnowflakeGenerator.prototype.getUniqueFlakes = function(x,y,width, height, flakes)
@@ -49,32 +49,51 @@ VolumeSnowflakeGenerator.prototype.getUniqueFlakes = function(x,y,width, height,
     for (flakeLocation in flakes)
     {
 	var flake = flakes[flakeLocation];
-	console.log(flake);
-	if (!(flake.x >= x &&
-	    flake.x < width &&
-	    flake.y >= y &&
-	      flake.y < height)) {
+
+	if (!(pointInRect(x,y,width,height,flake.x, flake.y))) {
+	    //flake.x >= x &&
+	    //flake.x < width+x &&
+	    //  flake.y >= y &&
+	    //  flake.y < height+y)) {
 	    uniqueFlakes.push(flake);
 	}
     }
     return uniqueFlakes;
 }
 
+function pointInRect(x,y,width,height, pointX, pointY)
+{
+    if (pointX < x) return false;
+    if (pointX >= width + x) return false;
+    if (pointY < y) return false;
+    if (pointY >= height + y) return false;
+    return true;
+}
+
 VolumeSnowflakeGenerator.prototype.getSnowflakes = function(x,y,width, height)
 {
+    this.spg.resize(x,y,width,height);
+
+    var flakes = new Array();
+    for (var i=0; i < this.getNumberOfFlakes(width, height); i++)
+    {
+	flakes.push({x:this.spg.getXPosition(),y:this.spg.getYPosition()});
+    }
+    return flakes;
+}
+
+VolumeSnowflakeGenerator.prototype.getAllSnowflakes = function(x,y,width, height)
+{
+    var flakes = this.getSnowflakes(x,y,width,height);
+    var uniqueFlakes = this.getUniqueFlakes(this.x, this.y, this.width, this.height, flakes);
+
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.spg.resize(x,y,width,height);
 
-    var flakes = new Array();
-    for (var i=0; i < this.getNumberOfFlakes(); i++)
-    {
-	flakes.push({x:this.spg.getXPosition(),y:this.spg.getYPosition()});
-    }
-    
-    return flakes;
+    return uniqueFlakes;
+
 }
 
 VolumeSnowflakeGenerator.prototype.getLol = function(x, y, size)
