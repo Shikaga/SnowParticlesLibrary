@@ -16,7 +16,6 @@ MockRandom.prototype.addNumber = function(number)
 
 MockRandom.prototype.random = function()
 {
-    console.log(this);
     return this.numbersToReturn.shift();
 }
 
@@ -196,7 +195,6 @@ test("Flakes in old quadrant are discarded", function()
 		  {x:0,y:0},{x:9,y:0},{x:0,y:9},{x:9,y:9},{x:10,y:9},{x:10,y:10}
 		  ];
     var uniqueFlakes = vsg.getUniqueFlakes(0,10,10,10,flakes);
-    console.log("Z", uniqueFlakes);
     equal(6,uniqueFlakes.length);
     equal(uniqueFlakes[0].x, 0);
     equal(uniqueFlakes[0].y, 0);
@@ -220,7 +218,6 @@ test("Snowflakes aren't generated in old quadrants", function()
     mspg.addPosition(5,5);
     vsg.spg = mspg;
     var flakes = vsg.getAllSnowflakes(0,0,10,10);
-    console.log(flakes);
     equal(1, flakes.length);
     equal(5, flakes[0].x);
     equal(5, flakes[0].y);
@@ -259,7 +256,6 @@ test("Snowflakes aren't generated in old quadrants", function()
     equal(11, flakes[1].y);
     equal(5, flakes[2].x);
     equal(21, flakes[2].y);
-    console.log("x",flakes);
 });
 
 testlol(vsg.getLol());

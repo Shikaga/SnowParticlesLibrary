@@ -44,7 +44,6 @@ VolumeSnowflakeGenerator.prototype.getNumberOfFlakes = function(width, height)
 
 VolumeSnowflakeGenerator.prototype.getUniqueFlakes = function(x,y,width, height, flakes)
 {
-    console.log(flakes);
     var uniqueFlakes = [];
     for (flakeLocation in flakes)
     {
