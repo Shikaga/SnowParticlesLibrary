@@ -15,7 +15,6 @@ SnowflakePositionGenerator.prototype.resize = function(x,y,width, height)
     this.y = y;
     this.width = width;
     this.height = height;
-
 }
 
 SnowflakePositionGenerator.prototype.getXPosition = function()
@@ -50,10 +49,6 @@ VolumeSnowflakeGenerator.prototype.getUniqueFlakes = function(x,y,width, height,
 	var flake = flakes[flakeLocation];
 
 	if (!(pointInRect(x,y,width,height,flake.x, flake.y))) {
-	    //flake.x >= x &&
-	    //flake.x < width+x &&
-	    //  flake.y >= y &&
-	    //  flake.y < height+y)) {
 	    uniqueFlakes.push(flake);
 	}
     }
@@ -92,10 +87,4 @@ VolumeSnowflakeGenerator.prototype.getAllSnowflakes = function(x,y,width, height
     this.height = height;
 
     return uniqueFlakes;
-
-}
-
-VolumeSnowflakeGenerator.prototype.getLol = function(x, y, size)
-{
-    return "lol";
 }

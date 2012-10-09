@@ -1,10 +1,3 @@
-function testlol(a)
-{
-    test("equal", function() {
-	equal("lol", a);
-    });
-}
-
 var MockRandom = function() {
     this.numbersToReturn = [];
 }
@@ -256,11 +249,4 @@ test("Snowflakes aren't generated in old quadrants", function()
     equal(11, flakes[1].y);
     equal(5, flakes[2].x);
     equal(21, flakes[2].y);
-});
-
-testlol(vsg.getLol());
-
-test("equal", function() {
-    vsg.rgen
-    equal("lol", vsg.getLol());
 });
