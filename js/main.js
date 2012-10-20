@@ -67,8 +67,9 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var xEnd = x+xEndOffset;
     var yEnd = this.bottomOfScreen;
 
-    var leaf = this.spriteHandler.createLeafSprite(x,y,size);
-	this.spriteHandler.animateLeaf(leaf, xEnd, yEnd, timeToRun);
+    //var sprite = this.spriteHandler.createLeafSprite(x,y,size);
+	var sprite = this.spriteHandler.createCherryBlossomSprite(x,y,size);
+	this.spriteHandler.animateLeaf(sprite, xEnd, yEnd, timeToRun);
     //var circle = this.spriteHandler.createCircleSprite(x,y,size);
     //this.spriteHandler.animateSprite(circle, xEnd, yEnd, timeToRun);
 }
@@ -83,6 +84,12 @@ SpriteHandler.prototype.createLeafSprite = function(x, y, size)
     return circle;
 }
 
+SpriteHandler.prototype.createCherryBlossomSprite = function(x, y, size)
+{
+    var circle = paper.image("images/cherry_blossom.svg", x, y, 20, 20);
+    return circle;
+}
+
 SpriteHandler.prototype.createCircleSprite = function(x, y, size)
 {
     var circle = paper.circle(x, y, size);    
@@ -94,6 +101,7 @@ SpriteHandler.prototype.animateSprite = function(sprite, x, y, timeToAnimate)
 {
     var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
     sprite.animate(anim); 
+	setTimeout(function() {sprite.remove()}, timeToAnimate);
 }
 
 SpriteHandler.prototype.animateLeaf = function(sprite, x, y, timeToAnimate)
@@ -101,6 +109,7 @@ SpriteHandler.prototype.animateLeaf = function(sprite, x, y, timeToAnimate)
     //var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
 	var rotate = Math.random() * 1000 + 500;
     sprite.animate({transform: "t" + x + "," + y + "r720",}, timeToAnimate, ""); 
+	setTimeout(function() {sprite.remove()}, timeToAnimate);
 }
 
 SnowflakeGenerator.prototype.generateSnowflakes = function()
