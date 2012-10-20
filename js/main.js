@@ -43,7 +43,7 @@ SnowflakeInitializationEngine.prototype.getTimeToRun = function(size)
 }
 
 var SnowflakeGenerator = function() {
-	this.season = "";
+	this.season = "winter";
     var windCoefficient = 0.1;
     this.wind = Math.random() * windCoefficient*2 - windCoefficient;
     this.speed = .1;
@@ -80,10 +80,11 @@ SnowflakeGenerator.prototype.createSnowflake = function()
 		case "autumn":
 			sprite = this.spriteHandler.createLeafSprite(x,y,size);
 			break;
+		case "payday":
+			sprite = this.spriteHandler.createMoneySprite(x,y,size);
+			break;
 	}
-	this.spriteHandler.animateLeaf(sprite, xEnd, yEnd, timeToRun);
-    //
-    //this.spriteHandler.animateSprite(circle, xEnd, yEnd, timeToRun);
+	this.spriteHandler.animateSprite(sprite, xEnd, yEnd, timeToRun);
 }
 
 var SpriteHandler = function() {
@@ -102,6 +103,12 @@ SpriteHandler.prototype.createCherryBlossomSprite = function(x, y, size)
     return circle;
 }
 
+SpriteHandler.prototype.createMoneySprite = function(x, y, size)
+{
+    var circle = paper.image("images/money.jpg", x, y, 40, 20);
+    return circle;
+}
+
 SpriteHandler.prototype.createCircleSprite = function(x, y, size)
 {
     var circle = paper.circle(x, y, size);    
@@ -111,16 +118,9 @@ SpriteHandler.prototype.createCircleSprite = function(x, y, size)
 
 SpriteHandler.prototype.animateSprite = function(sprite, x, y, timeToAnimate)
 {
-    var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
-    sprite.animate(anim); 
-	setTimeout(function() {sprite.remove()}, timeToAnimate);
-}
-
-SpriteHandler.prototype.animateLeaf = function(sprite, x, y, timeToAnimate)
-{
-    //var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
-	var rotate = Math.random() * 1000 + 500;
-    sprite.animate({transform: "t" + x + "," + y + "r720",}, timeToAnimate, ""); 
+	if (sprite == null) return;
+	var rotate =  Math.random() * 2000 - 1000;
+    sprite.animate({transform: "t" + x + "," + y + "r" + rotate,}, timeToAnimate, ""); 
 	setTimeout(function() {sprite.remove()}, timeToAnimate);
 }
 
