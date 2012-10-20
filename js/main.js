@@ -43,6 +43,7 @@ SnowflakeInitializationEngine.prototype.getTimeToRun = function(size)
 }
 
 var SnowflakeGenerator = function() {
+	this.season = "";
     var windCoefficient = 0.1;
     this.wind = Math.random() * windCoefficient*2 - windCoefficient;
     this.speed = .1;
@@ -67,10 +68,21 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var xEnd = x+xEndOffset;
     var yEnd = this.bottomOfScreen;
 
-    //var sprite = this.spriteHandler.createLeafSprite(x,y,size);
-	var sprite = this.spriteHandler.createCherryBlossomSprite(x,y,size);
+	var sprite;
+	switch (this.season) 
+	{
+		case "winter": 
+			sprite = this.spriteHandler.createCircleSprite(x,y,size);
+			break;
+		case "spring":
+			sprite = this.spriteHandler.createCherryBlossomSprite(x,y,size);
+			break;
+		case "autumn":
+			sprite = this.spriteHandler.createLeafSprite(x,y,size);
+			break;
+	}
 	this.spriteHandler.animateLeaf(sprite, xEnd, yEnd, timeToRun);
-    //var circle = this.spriteHandler.createCircleSprite(x,y,size);
+    //
     //this.spriteHandler.animateSprite(circle, xEnd, yEnd, timeToRun);
 }
 
@@ -116,7 +128,7 @@ SnowflakeGenerator.prototype.generateSnowflakes = function()
 {
     var self = this;
     setInterval(function() {
-	self.createSnowflake();
+	self.createSnowflake(this.season);
     }, this.heaviness);
 }
 
