@@ -63,16 +63,24 @@ SnowflakeGenerator.prototype.createSnowflake = function()
     var xEndOffset = this.sie.getWindDrift();
 
     var x = xOffset +  Math.random() * xRange;
-    var y = 0;    
+    var y = -10;    
     var xEnd = x+xEndOffset;
     var yEnd = this.bottomOfScreen;
 
-    var circle = this.spriteHandler.createCircleSprite(x,y,size);
-    this.spriteHandler.animateCircleSprite(circle, xEnd, yEnd, timeToRun);
+    var leaf = this.spriteHandler.createLeafSprite(x,y,size);
+	this.spriteHandler.animateLeaf(leaf, xEnd, yEnd, timeToRun);
+    //var circle = this.spriteHandler.createCircleSprite(x,y,size);
+    //this.spriteHandler.animateSprite(circle, xEnd, yEnd, timeToRun);
 }
 
 var SpriteHandler = function() {
 
+}
+
+SpriteHandler.prototype.createLeafSprite = function(x, y, size)
+{
+    var circle = paper.image("images/autumn_leaf.svg", x, y, 20, 20);
+    return circle;
 }
 
 SpriteHandler.prototype.createCircleSprite = function(x, y, size)
@@ -82,10 +90,17 @@ SpriteHandler.prototype.createCircleSprite = function(x, y, size)
     return circle;
 }
 
-SpriteHandler.prototype.animateCircleSprite = function(circle, x, y, timeToAnimate)
+SpriteHandler.prototype.animateSprite = function(sprite, x, y, timeToAnimate)
 {
     var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
-    circle.animate(anim); 
+    sprite.animate(anim); 
+}
+
+SpriteHandler.prototype.animateLeaf = function(sprite, x, y, timeToAnimate)
+{
+    //var anim = Raphael.animation({cx: x, cy: y}, timeToAnimate);
+	var rotate = Math.random() * 1000 + 500;
+    sprite.animate({transform: "t" + x + "," + y + "r720",}, timeToAnimate, ""); 
 }
 
 SnowflakeGenerator.prototype.generateSnowflakes = function()
